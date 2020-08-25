@@ -19,8 +19,11 @@ swervebot:
         rh_steering: "leg_rh_joint"
 
         # Range of motion of steering motors
-        min_steering_angle: -1.58
-        max_steering_angle: 1.58
+        # min_steering_angle: -1.58
+        # max_steering_angle: 1.58
+
+        # Minimise steering difference between previous and next steering angle (continuous steering joints only)
+        # enable_min_steering_difference: true
 
         # Other
         publish_rate: 50
