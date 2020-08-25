@@ -40,6 +40,7 @@
 #include <cmath>
 #include <string>
 #include <boost/optional.hpp>
+#include <algorithm>
 
 #include <controller_interface/multi_interface_controller.h>
 #include <hardware_interface/joint_command_interface.h>
@@ -148,11 +149,20 @@ namespace swerve_controller
         /// Whether to publish odometry to tf or not:
         bool enable_odom_tf_;
 
+        // Whether to enable minimum steering difference by checking whether the calculated angle or its
+        // polar opposite angle are closer to the previously set one
+        bool enable_min_steering_difference_;
+
         /// Speed limiters:
         CommandTwist last1_cmd_;
         CommandTwist last0_cmd_;
         SpeedLimiter limiter_lin_;
         SpeedLimiter limiter_ang_;
+
+        double lf_steering_last;
+        double rf_steering_last;
+        double lh_steering_last;
+        double rh_steering_last;
 
     private:
         void updateOdometry(const ros::Time &time);
@@ -160,6 +170,8 @@ namespace swerve_controller
         void updateCommand(const ros::Time &time, const ros::Duration &period);
 
         void brake();
+
+        void minSteeringDifference(double &steering, double &previous_steering, double &speed);
 
         bool clipSteeringAngle(double &steering, double &speed);
 
